@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src", // This sets the base directory for your aliases
+    "paths": {
+      "@*": ["./*"],
+      "@pages/*": ["pages/*"],
+      "@assets/*": ["assets/*"],
+      "@services/*": ["services/*"],
+      "@context/*": ["context/*"],
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"],
+    }
+  },
+  "include": ["src/**/*.js", "src/**/*.jsx"]
+}

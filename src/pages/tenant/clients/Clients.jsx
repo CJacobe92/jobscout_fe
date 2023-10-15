@@ -1,0 +1,10 @@
+import HeaderWrapper from '@pages/common/HeaderWrapper'
+import React from 'react'
+
+const Clients = () => {
+  return (
+    <div>Clients</div>
+  )
+}
+
+export default HeaderWrapper(Clients, 'Clients')
