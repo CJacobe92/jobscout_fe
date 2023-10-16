@@ -1,97 +1,97 @@
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/ui/form';
+import { Input } from '@components/ui/input';
 import { useDataContext } from '@context/DataContextProvider';
 import { plan } from '@services/storage'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod'
+import { Button } from '@components/ui/button';
+import PlanSelect from '@components/select/PlanSelect';
+import { useToast } from '@components/ui/use-toast';
+import { useEffect, useState } from 'react';
+import { ToastAction } from '@components/ui/toast';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { Link, useNavigate } from 'react-router-dom';
+
+const formSchema = z.object({
+  company: z.string().min(2, {message: '**Company name is required'}).max(50),
+  address: z.string().min(2, {message: '**Company address is required'}).max(20),
+  license: z.string().min(2, {message: '**License is required'}).max(15),
+  subscription: z.string(),
+})
+
+const formItems = [
+  { name: 'company', label: 'Company' },
+  { name: 'license', label: 'POEA License' },
+  { name: 'address', label: 'Address' },
+]
 
 const Step1 = () => { 
-  
-  const planItems = [
-    {name: 'Business Standard', value: 'bstandard'},
-    {name: 'Business Premium', value: 'bpremium'},    
-    {name: 'Enterprise', value: 'enterprise'}
-  ]
-
   const { updateAction, state } = useDataContext();
-  
+  const { toast } = useToast();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const {name, value} = e.target
-    updateAction({...state, [name]: value})
-  }
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: state
+  })
 
-  const handleNext = (e) => {
-    e.preventDefault();
-    
-    if(state && state.company_name && state.company_address && state.company_email && state.license) {
-      navigate('/step2')
-      console.log(state)
+  const error = Object.values(form.formState.errors).map((data) => (data))
+
+  const onSubmit = (value) => {
+
+    updateAction({ ...state, ...value });
+    plan.set(value.subscription);
+    navigate('/step2')
+
+  };
+
+  useEffect(() => {
+    const showError = () => {
+      if (error.length > 0) {
+        toast({
+          description: (
+            <div className='flex flex-row items-center justify-center gap-2'>
+              <ExclamationTriangleIcon className='mt-1'/>
+              <span>Did not meet field requirements.</span>
+            </div>
+        ),
+          action: <ToastAction altText="Try again" onClick={() => form.clearErrors()}>Try again</ToastAction>,
+        });
+      }
     }
-  }
+    showError();
+  }, [form.formState.errors]);
   
   return (
-    <div className='min-h-screen w-full flex items-center justify-center'>
-      <form className='w-80 flex flex-col items-center gap-4' onSubmit={handleNext}>
-        <div className='text-center space-y-2'>
-          <h1 className='text-2xl font-bold text-indigo-600'>JobScout</h1>
-          <p className='font-semibold text-xl text-gray-500'>Create a Tenant Account</p>
-          <p className='text-sm font-semibold text-gray-600'>Already have an account? Sign in.</p>
-        </div>
-        <div className='flex justify-end itemes-center w-full text-sm'>
-          <select className='w-max-xs' onChange={(e) => { plan.set(e.target.value); handleChange(e)}} name='subscription' defaultValue={state.subscription} >
-            {planItems.map((data, index) => (
-              <option key={index} value={data.value}>{data.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className='flex flex-col gap-2 w-full'>
-          
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>Company Name</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none' 
-              onChange={handleChange} 
-              value={state.company_name}
-              type="text" 
-              name="company_name" 
-            />
+    <div className='flex flex-col items-center justify-center w-full min-h-screen'>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2 p-4 border border-gray-300 rounded-lg shadow-md w-96'>
+          <div className='my-4 space-y-2'>
+            <h1 className='text-xl font-bold text-indigo-700'>JobScout</h1>
+            <p className='text-sm font-semibold text-gray-500'>Create a Tenant Account</p>
+            <span className='text-xs font-semibold text-slate-700'>Already have an account? <Link to='/signin' className='underline'>Sign in.</Link></span>
           </div>
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>Company Address</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none'
-              value={state.company_address}
-              onChange={handleChange} 
-              name="company_address" 
-              type="text" 
+          <p className='my-1 text-xs font-semibold'>Current plan:</p>
+          <FormField name='subscription' control={form.control} render={({field}) => (<PlanSelect field={field}/>)} />
+          <p className='mt-2 mb-1 text-xs font-semibold'>Enter company details:</p>
+          {formItems.map((data, index) => (
+            <FormField 
+              key={index}
+              name={data.name}
+              control={form.control}
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel className='text-xs text-gray-600'>{data.label}</FormLabel>
+                  <FormControl><Input {...field} className='border border-gray-400 rounded-none'/></FormControl>
+                </FormItem>
+              )}
             />
-          </div>
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>Company Email</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none'
-              onChange={handleChange} 
-              value={state.company_email}
-              name="company_email" 
-              type="email" 
-            />
-          </div>
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>POEA License</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none' 
-              onChange={handleChange} 
-              value={state.license}
-              name="license" 
-              type="text" 
-            />
-          </div>
-        </div>
-        <button type='submit' className='btn btn-sm btn-primary w-full'>Next</button>
-        <div className='text-xs text-center text-gray-500'>
-          <p>By registering, you affirm that all the information provided is accurate to the best of your knowledge. Any instances of fraudulent agencies and POEA licenses will be promptly reported to the appropriate authorities.</p>
-        </div>
-      </form>
+          ))}
+          <Button type='submit' className='my-2'>Next</Button>    
+          <span className='text-xs text-gray-600'>By registering, you affirm that all the information provided is accurate to the best of your knowledge. Any instances of fraudulent agencies and POEA licenses will be promptly reported to the appropriate authorities.</span>
+        </form>
+      </Form>
     </div>
   )
 }

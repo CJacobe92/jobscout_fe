@@ -1,84 +1,103 @@
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/ui/form';
+import { Input } from '@components/ui/input';
 import { useDataContext } from '@context/DataContextProvider';
+import { plan } from '@services/storage'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod'
+import { Button } from '@components/ui/button';
+import PlanSelect from '@components/select/PlanSelect';
+import { useToast } from '@components/ui/use-toast';
+import { useEffect, useState } from 'react';
+import { ToastAction } from '@components/ui/toast';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { Link, useNavigate } from 'react-router-dom';
 import fetchTenantSignup from '@hooks/mutations/fetchTenantSignup';
-import { plan } from '@services/storage';
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+
+
+const formSchema = z.object({
+  firstname: z.string().min(2).max(50),
+  lastname: z.string().min(2).max(20),
+  email: z.string().email(),
+  phone: z.string().min(2).max(15),
+  subscription: z.string(),
+})
+
+const formItems = [
+  { name: 'firstname', label: 'Firstname' },
+  { name: 'lastname', label: 'Lastname' },
+  { name: 'email', label: 'Email' },
+  { name: 'phone', label: 'Phone'}
+]
 
 const Step2 = () => {
 
-  const planItems = [
-    {name: 'Business Standard', value: 'bstandard'},
-    {name: 'Business Premium', value: 'bpremium'},    
-    {name: 'Enterprise', value: 'enterprise'}
-  ]
-
-  const { updateAction, state } = useDataContext();
-
-  const { mutate } = fetchTenantSignup()
-
-  const handleChange = (e) => {
-    const {name, value} = e.target
-    updateAction({...state, [name]: value})
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    mutate({state})
-  }
+    const { updateAction, state } = useDataContext();
+    const { mutate } = fetchTenantSignup()
+    const { toast } = useToast();
+    const navigate = useNavigate();
+  
+    const form = useForm({
+      resolver: zodResolver(formSchema),
+      defaultValues: state
+    })
+  
+    const error = Object.values(form.formState.errors).map((data) => (data))
+  
+    const onSubmit = (value) => {
+  
+      updateAction({ ...state, ...value });
+      mutate({state}, {
+        onSuccess: () => {
+          navigate('/step3')
+        }
+      })
+    };
+  
+    useEffect(() => {
+      const showError = () => {
+        if (error.length > 0) {
+          toast({
+            description: (
+              <div className='flex flex-row items-center justify-center gap-2'>
+                <ExclamationTriangleIcon className='mt-1'/>
+                <span>Did not meet field requirements.</span>
+              </div>
+          ),
+            action: <ToastAction altText="Try again" onClick={() => form.clearErrors()}>Try again</ToastAction>,
+          });
+        }
+      }
+      showError();
+    }, [form.formState.errors]);
   
   return (
-    <div className='min-h-screen w-full flex items-center justify-center'>
-      <form className='w-80 flex flex-col items-center gap-4' onSubmit={handleSubmit}>
-        <div className='text-center space-y-2'>
-          <h1 className='text-2xl font-bold text-indigo-600'>JobScout</h1>
-          <p className='font-semibold text-xl text-gray-500'>Create a Tenant Account</p>
-          <p className='text-sm font-semibold text-gray-600'>Already have an account? Sign in.</p>
-        </div>
-        <div className='flex justify-end itemes-center w-full text-sm'>
-          <select className='w-max-xs' onChange={(e) => { plan.set(e.target.value); handleChange(e)}} name='subscription' defaultValue={state.subscription} >
-            {planItems.map((data, index) => (
-              <option key={index} value={data.value}>{data.name}</option>
-            ))}
-          </select>
-        </div>
-        <div className='flex flex-col gap-2 w-full'>
-          
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>Firstname</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none'
-              onChange={handleChange}
-              value={state.firstname}
-              type="text" 
-              name="firstname" 
-            />
+    <div className='flex flex-col items-center justify-center w-full min-h-screen'>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2 p-4 border border-gray-300 rounded-lg shadow-md w-96'>
+          <div className='my-4 space-y-2'>
+            <h1 className='text-xl font-bold text-indigo-700'>JobScout</h1>
+            <p className='text-sm font-semibold text-gray-500'>Create a Tenant Account</p>
+            <span className='text-xs font-semibold text-slate-700'>Already have an account? <Link to='/signin' className='underline'>Sign in.</Link></span>
           </div>
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>Lastname</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none'
-              onChange={handleChange} 
-              value={state.lastname}
-              type="text" 
-              name="lastname" 
+          <FormField name='subscription' control={form.control} render={({field}) => (<PlanSelect field={field}/>)} />
+          {formItems.map((data, index) => (
+            <FormField 
+              key={index}
+              name={data.name}
+              control={form.control}
+              render={({field}) => (
+                <FormItem>
+                  <FormLabel className='text-xs text-gray-600'>{data.label}</FormLabel>
+                  <FormControl><Input {...field} className='border border-gray-400'/></FormControl>
+                </FormItem>
+              )}
             />
-          </div>
-          <div className='w-full'>
-            <label className='text-xs font-semibold'>Contact Number</label>
-            <input 
-              className='block w-full border border-primary p-1 outline-none' 
-              onChange={handleChange} 
-              value={state.contact_number}
-              type="text" 
-              name="contact_number" 
-            />
-          </div>
-        </div>
-        <button type='submit' className='btn btn-sm btn-primary w-full'>Submit</button>
-        <div className='text-xs text-center text-gray-500'>
-          <p>By registering, you affirm that all the information provided is accurate to the best of your knowledge. Any instances of fraudulent agencies and POEA licenses will be promptly reported to the appropriate authorities.</p>
-        </div>
-      </form>
+          ))}
+          <Button type='submit' className='my-2'>Submit</Button>    
+          <span className='text-xs text-gray-600'>By registering, you affirm that all the information provided is accurate to the best of your knowledge. Any instances of fraudulent agencies and POEA licenses will be promptly reported to the appropriate authorities.</span>
+        </form>
+      </Form>
     </div>
   )
 }
