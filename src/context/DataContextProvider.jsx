@@ -4,13 +4,13 @@ import React, { createContext, useContext, useReducer } from 'react'
 const subscription =  plan.get();
 
 const initialState = {
-  company_name: '',
-  company_address: '',
-  company_email: '',
+  company: '',
+  address: '',
+  email: '',
   license: '',
   firstname: '',
   lastname: '',
-  contact_number: '',
+  phone: '',
   subscription: subscription
 }
 

@@ -7,89 +7,89 @@ import React, { useState } from 'react'
 const columnHelper = createColumnHelper();
 
 const unassignedColumns = [
-    columnHelper.accessor('job_name', {
+    columnHelper.accessor('title', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Title
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('company_name', {
+    columnHelper.accessor('company', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Company
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_location', {
+    columnHelper.accessor('location', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Location
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_salary', {
+    columnHelper.accessor('salary', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Salary
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_currency', {
+    columnHelper.accessor('currency', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Currency
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_type', {
+    columnHelper.accessor('category', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Type
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_headcount', {
+    columnHelper.accessor('headcount', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Headcount
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_status', {
+    columnHelper.accessor('status', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Status
+            {column.id?.charAt(0).toUpperCase() + column.id?.slice(1)}
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )

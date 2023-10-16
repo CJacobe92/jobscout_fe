@@ -1,62 +1,34 @@
+import { Button } from '@components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@components/ui/dropdown-menu';
 import fetchAssign from '@hooks/mutations/fetchAssign';
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { DotsHorizontalIcon, HandIcon } from '@radix-ui/react-icons';
+import { Plus } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 
 const UnassignedActionsBtn = ({job}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const actionsRef = useRef(null);
-  const scrollableContainerRef = useRef(null);
   const {mutate: assign} = fetchAssign()
-
-  const handleOpen = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const closeMenu = () => {
-    setIsOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (actionsRef.current && !actionsRef.current.contains(event.target)) {
-        closeMenu();
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (actionsRef.current && scrollableContainerRef.current) {
-      const actionsRect = actionsRef.current.getBoundingClientRect();
-      const containerRect = scrollableContainerRef.current.getBoundingClientRect();
-
-      if (actionsRect.bottom > containerRect.bottom) {
-        console.log('Menu exceeds container height');
-      }
-    }
-  }, [isOpen]);
 
   const handleAssign = () => {
     const jobId = job.id
     assign({jobId})
   }
 
-  return (
-    <div ref={actionsRef} className='relative inline-block'>
-      <button onClick={handleOpen}>
-        <DotsHorizontalIcon />
-      </button>
-      {isOpen && (
-        <ul className="menu menu-sm bg-base-200 rounded-box absolute top-0 right-5 z-20 w-16 border border-gray-300 text-xs">
-          <button onClick={handleAssign} type='button'>Assign</button>
-        </ul>
-      )}
-    </div>
+  return (   
+    <DropdownMenu >
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="w-4 h-4 p-0">
+              <span className="sr-only">Open menu</span>
+              <DotsHorizontalIcon className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel className='text-xs'>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator className='px-2 bg-gray-300'/>
+            <DropdownMenuItem onClick={handleAssign} className='flex flex-row justify-center gap-2 text-xs cursor-pointer'>
+            <Plus size={'1rem'}/> Grab job order
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
   );
 };
 

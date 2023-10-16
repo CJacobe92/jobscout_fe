@@ -34,8 +34,6 @@ export const auth = {
   remove: () => localStorage.removeItem('auth'),
 }
 
-
-
 export const userSettings = {
 
    initialSettings: {

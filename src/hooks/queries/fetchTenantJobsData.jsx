@@ -25,6 +25,7 @@ const fetchTenantJobsData = (assignment, page, query, location) => {
   return useQuery({
     queryKey: ['tenantJobsData', page, query, location, assignment],
     queryFn: getData,
+    staleTime: 60000,
     enabled: !!authorization
   })
 }

@@ -9,6 +9,7 @@
       "@context/*": ["context/*"],
       "@utils/*": ["utils/*"],
       "@hooks/*": ["hooks/*"],
+      "@lib/*": ["lib/*"],
     }
   },
   "include": ["src/**/*.js", "src/**/*.jsx"]
