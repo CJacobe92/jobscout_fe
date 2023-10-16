@@ -1,21 +1,12 @@
-import { CaretSortIcon } from '@radix-ui/react-icons'
+import AssignedActionsBtn from '@components/buttons/AssignedActionsBtn';
+import ActionsBtn from '@components/buttons/UnassignedActionsBtn';
+import { CaretSortIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { createColumnHelper } from '@tanstack/react-table'
-import React from 'react'
+import React, { useState } from 'react'
 
 const columnHelper = createColumnHelper();
 
-const jobsColumns = [
-    columnHelper.accessor('job_name', {
-      cell: info => info.getValue(),
-      header: ({column}) => {
-        return (
-          <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Title
-            <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
-          </button>
-        )
-      },
-    }),
+const clientColumns = [
     columnHelper.accessor('company_name', {
       cell: info => info.getValue(),
       header: ({column}) => {
@@ -27,72 +18,72 @@ const jobsColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_location', {
+    columnHelper.accessor('company_poc_name', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Location
+            Principal
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_salary', {
+    columnHelper.accessor('company_poc_title', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Salary
+            Title
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_currency', {
+    columnHelper.accessor('company_email', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Salary
+            Email
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_type', {
+    columnHelper.accessor('company_phone', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Type
+            Phone
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_headcount', {
+    columnHelper.accessor('company_address', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
           <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Headcount
+            Address
             <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
           </button>
         )
       },
     }),
-    columnHelper.accessor('job_status', {
-      cell: info => info.getValue(),
-      header: ({column}) => {
-        return (
-          <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className='flex flex-row'>
-            Status
-            <CaretSortIcon className="w-4 h-4 ml-2 lowercase" />
-          </button>
-        )
+    columnHelper.accessor('Actions', {
+      cell: (info) => {
+
+        const job = info.row.original
+
+       return(
+        <AssignedActionsBtn job={job}/>
+       )
       },
+     
     }),
   ]
 
-export default jobsColumns
+export default clientColumns
