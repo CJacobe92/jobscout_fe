@@ -1,6 +1,6 @@
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
-import fetchCredentials from '@hooks/mutations/FetchCredentials'
+import fetchCredentials from '@hooks/mutations/fetchCredentials'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ToastAction } from '@components/ui/toast';
 import { ExclamationTriangleIcon, LockClosedIcon } from '@radix-ui/react-icons';
