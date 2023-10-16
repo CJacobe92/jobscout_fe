@@ -1,5 +1,7 @@
+import PaginationBtn from '@components/buttons/PaginationBtn';
 import { DataTable } from '@components/tables/data-table';
-import jobsColumns from '@components/tables/jobsColumns';
+import unassignedColumns from '@components/tables/unassignedColumns';
+import jobsColumns from '@components/tables/unassignedColumns';
 import { useSearchContext } from '@context/SearchContextProvider'
 import fetchTenantJobsData from '@hooks/queries/fetchTenantJobsData';
 import HeaderWrapper from '@pages/common/HeaderWrapper'
@@ -16,8 +18,11 @@ const Unassigned = () => {
   const { data, isLoading } = fetchTenantJobsData('unassigned', page, query, location)
 
   return isLoading ? <div>Loading... </div> : (
-    <div className='container mx-auto py-4 overflow-y-auto h-[90vh]'>
-      <DataTable columns={jobsColumns} data={data.data}/>
+    <div className='container mx-auto py-4 overflow-y-auto'>
+      <DataTable columns={unassignedColumns} data={data.data} query={query} location={location}/>
+      <div className='fixed bottom-5 right-5'>
+        <PaginationBtn data={data} page={page} query={query} location={location} assignment={'unassigned'} />
+      </div>
     </div>
   )
 }
