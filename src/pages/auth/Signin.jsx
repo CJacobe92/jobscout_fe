@@ -73,7 +73,7 @@ const Signin = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2 p-6 border border-gray-300 rounded-lg shadow-md w-96'>
           <div className='my-2 space-y-2'>
-            <h1 className='text-xl font-bold text-indigo-700'>JobScout</h1>
+            <Link to={'/'} className='text-xl font-bold text-indigo-700'>JobScout</Link>
             <p className='text-sm font-semibold text-gray-500'>Account Sign in</p>
             <span className='text-xs font-semibold text-gray-600'>Don't have an account? Sign up.</span>
           </div>

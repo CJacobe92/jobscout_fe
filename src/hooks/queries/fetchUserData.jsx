@@ -23,6 +23,7 @@ const fetchUserData = () => {
           firstname: response?.data.firstname,
           lastname: response?.data.lastname,
           email: response?.data.email,
+          username: response?.data.username
         }
 
         user.set(data)
