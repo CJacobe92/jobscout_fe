@@ -33,6 +33,7 @@ import { Input } from "@components/ui/input"
 import HeaderWrapper from '@pages/common/HeaderWrapper'
 import { Button } from "@components/ui/button"
 import { Checkbox } from "@components/ui/checkbox"
+import { useNavigate } from "react-router-dom"
 
 const UserProfile = () => {
 
@@ -40,24 +41,29 @@ const UserProfile = () => {
   const { mutate, isLoading, isSuccess} = fetchUpdateUserData();
   const [showPassword, setShowPassword] = useState(false)
 
+  const navigate = useNavigate();
+
   const accountchema = z.object({
     firstname: z.union([
-      z.string().length(0),
-      z.string().min(4, {message: 'Firstname cannot be less than 4 characters in length'})
-    ]).transform(e => e === '' ? data?.firstname : e),
+      z.string().length(0, {message: 'Firstname cannot be less than 4 characters in length'}),
+      z.string().min(4)
+    ]).optional()
+      .transform(e => e === '' ? data?.firstname : e),
     lastname: z.union([
-      z.string().length(0),
-      z.string().min(4, {message: 'Lastname cannot be less than 4 characters in length'})
-    ]).transform(e => e === '' ? data?.lastname : e),
+      z.string().length(0, {message: 'Lastname cannot be less than 4 characters in length'}),
+      z.string().min(4)
+    ]).optional()
+      .transform(e => e === '' ? data?.lastname : e),
     email: z.union([
-      z.string().length(0),
-      z.string().min(4, {message: 'Email cannot be less than 4 characters in length'}).email()
-    ]).transform(e => e === '' ? data?.email : e),
+      z.string().length(0, {message: 'Email cannot be less than 4 characters in length'}),
+      z.string().min(4).email()
+    ]).optional()
+      .transform(e => e === '' ? data?.email : e),
     username: z.union([
-      z.string().length(0),
-      z.string().min(4, {message: 'Username cannot be less than 4 characters in length'})
-    ]).transform(e => e === '' ? data?.username : e),
-
+      z.string().length(0, {message: 'Username cannot be less than 4 characters in length'}),
+      z.string().min(4)
+    ]).optional()
+      .transform(e => e === '' ? data?.username : e),
   });
 
  const passwordSchema = z.object({
@@ -108,15 +114,21 @@ const UserProfile = () => {
     {label: 'Confirm Password', name: 'password_confirmation', defaultValue: ''},
   ]
 
-  const onSubmit = (input) =>{
-
-    if (passwordForm.formState.isValid) {
-      mutate({input})
-    } else if (accountForm.formState.isValid) {
+  const onSubmitAccountForm = (input) => {
+    if (accountForm.formState.isValid){
       mutate({input})
     }
   }
 
+  const onSubmitPasswordForm = (input) => {
+    if (passwordForm.formState.isValid){
+      mutate({input}, {
+        onSuccess: () => {
+          navigate('/signin')
+        }
+      })
+    }
+  }
 
   useEffect(() => {
     const showAccountFormErrors = async () => {
@@ -177,13 +189,13 @@ const UserProfile = () => {
       <div className='flex flex-col items-center justify-start w-full p-4'>
         <Tabs defaultValue="account" className="w-[400px]">
           <TabsList className="grid justify-center w-full grid-cols-2"> {/* Center the TabsList */}
-            <TabsTrigger onClick={() => passwordForm.reset()} value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger onClick={() => passwordForm.reset()} value="account" className='data-[state=active]:border border-gray-300'>Account</TabsTrigger>
+            <TabsTrigger value="password"  className='data-[state=active]:border border-gray-300'>Password</TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
+          <TabsContent value="account" className='shadow-xl'>
                 
             <Form {...accountForm}>
-                <form onSubmit={accountForm.handleSubmit(onSubmit)}>
+                <form onSubmit={accountForm.handleSubmit(onSubmitAccountForm)}>
               <Card>
                 <CardHeader>
                   <CardTitle>Account</CardTitle>
@@ -231,9 +243,9 @@ const UserProfile = () => {
                 </form>
               </Form> 
               </TabsContent>
-              <TabsContent value="password">
+              <TabsContent value="password" className='shadow-xl'>
                 <Form {...passwordForm}>
-                  <form onSubmit={passwordForm.handleSubmit(onSubmit)}>
+                  <form onSubmit={passwordForm.handleSubmit(onSubmitPasswordForm)}>
                     <Card>
                       <CardHeader>
                         <CardTitle>Password</CardTitle>
@@ -257,7 +269,7 @@ const UserProfile = () => {
                                 <FormControl>
                                   <Input 
                                     {...field} 
-                                    autoComplete={false}
+                                    // autoComplete='off'
                                     type={showPassword ? 'text' : 'password'}
                                     className='border border-gray-400 rounded-none'
                                     disabled={isLoading? true : false}

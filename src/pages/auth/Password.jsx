@@ -50,6 +50,17 @@ const Password = () => {
         
         if (role == 'applicant' || role == 'owner')
         navigate('/t/dashboard')
+      },
+      onError: (error) => {
+        toast({
+          description: (
+            <div className='flex flex-row items-center justify-center gap-2'>
+              <ExclamationTriangleIcon className='mt-1'/>
+              <span>{error}</span>
+            </div>
+        ),
+          action: <ToastAction altText="Try again" onClick={() => form.reset()}>Try again</ToastAction>,
+        });
       }
     })
   }
