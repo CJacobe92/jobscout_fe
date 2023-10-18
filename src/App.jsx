@@ -10,6 +10,7 @@ import TenantDashboard from '@pages/tenant/TenantDashboard'
 import Assigned from '@pages/tenant/assigned/Assigned'
 import Clients from '@pages/tenant/clients/Clients'
 import Employees from '@pages/tenant/employees/Employees'
+import UserProfile from '@pages/tenant/profile/UserProfile'
 import Unassigned from '@pages/tenant/unassigned/Unassigned'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
@@ -31,6 +32,7 @@ const App = () => {
           <Route path={'/t/unassigned'} element={<Unassigned />}/>
           <Route path={'/t/clients'} element={<Clients />}/>
           <Route path={'/t/employees'} element={<Employees />}/>
+          <Route path={'/t/profile'} element={<UserProfile />}/>
 
         </Route>
         

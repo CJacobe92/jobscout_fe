@@ -15,7 +15,12 @@ const SwitchSelect = ({username}) => {
   return (
     <Select onValueChange={handleSwitch}>
       <SelectTrigger className='w-[180px] text-xs border border-gray-300'>
-        <SelectValue placeholder={username}/>
+        <SelectValue placeholder={
+        <div className='flex flex-row items-center justify-center gap-2 text-xs'>
+          <PersonIcon /> 
+          <p>{username}</p>
+        </div>
+      }/>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup >

@@ -50,6 +50,17 @@ const Password = () => {
         
         if (role == 'applicant' || role == 'owner')
         navigate('/t/dashboard')
+      },
+      onError: (error) => {
+        toast({
+          description: (
+            <div className='flex flex-row items-center justify-center gap-2'>
+              <ExclamationTriangleIcon className='mt-1'/>
+              <span>{error}</span>
+            </div>
+        ),
+          action: <ToastAction altText="Try again" onClick={() => form.reset()}>Try again</ToastAction>,
+        });
       }
     })
   }
@@ -88,7 +99,7 @@ const Password = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2 p-6 border border-gray-300 rounded-lg shadow-md w-96'>
         <div className='my-2 space-y-2'>
-          <h1 className='text-xl font-bold text-indigo-700'>JobScout</h1>
+          <Link className='text-xl font-bold text-indigo-700'>JobScout</Link>
           <p className='text-sm font-semibold text-gray-500'>Signing in as {type?.charAt(0).toUpperCase() + type?.slice(1)}</p>
           <span className='text-xs font-semibold text-gray-600'>Don't have an account? Sign up.</span>
         </div>

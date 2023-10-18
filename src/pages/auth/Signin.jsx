@@ -1,41 +1,51 @@
 import { Button } from '@components/ui/button'
 import { Input } from '@components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ToastAction } from '@components/ui/toast';
 import { ExclamationTriangleIcon, LockClosedIcon } from '@radix-ui/react-icons';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import * as z from 'zod'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@components/ui/form';
-import { toast } from '@components/ui/use-toast';
 import fetchCredentials from '@hooks/mutations/fetchCredentials';
-
-
-const usernamePattern = /^[A-Za-z0-9_.]+$/; // Regex pattern for usernames without spaces
-
-const usernameSchema = z.string().min(4).max(20).regex(usernamePattern);
-
-const emailSchema = z.string().email()
-
-const formSchema = z.object({
-  credentials: z.string().refine((value) => {
-    if (value.includes('@')) {
-      return emailSchema.safeParse(value).success;
-    } else {
-      return usernameSchema.safeParse(value).success;
-    }
-  }, {message: 'Invalid format or field is empty.'}),
-});
+import { toast } from '@components/ui/use-toast';
+import { ToastAction } from '@components/ui/toast';
 
 const Signin = () => {
+
+  const REGEX = /^[A-Za-z0-9_.]+$/;
+  const message = {
+    minAllowed: 'Username or email cannot be less than 4 characters in length',
+    maxAllowed: 'Username or email cannot be more than 15 characters in length',
+    invalid: 'Invalid characters'
+  }
+
+  const emailSchema = z.string().min(4, {
+    message: message.minAllowed 
+  }).max(15, {
+    message: message.maxAllowed
+  }).email()
+  
+  const formSchema = z.object({
+    credentials: z.string().regex(REGEX, {message: 'Invalid format'}).superRefine((val, ctx) => {
+      if (val.length < 4) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.too_small,
+          type: 'too_small',
+          inclusive: true,
+          message: 'Username or email cannot be less than 4 characters in length'
+        })
+      } 
+      else if(val.includes('@')) {
+        return emailSchema.parse(val)
+      }
+    })
+  })
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {credentials: ''}
   })
-
-  const error = Object.values(form.formState.errors).map((data) => (data))
   
   const { mutate } = fetchCredentials();
   const navigate = useNavigate();
@@ -47,19 +57,32 @@ const Signin = () => {
         const type = data.role
         const token = data.token
         navigate(`/password?type=${type}&username=${username}&token=${token}`)
+      },
+      onError:(error) => {
+        toast({
+          description: (
+            <p className='flex flex-row items-center justify-center gap-2'>
+              <ExclamationTriangleIcon className='mt-1'/>
+              <span>{error}</span>
+            </p>
+        ),
+          action: <ToastAction altText="Try again" onClick={() => form.reset()}>Try again</ToastAction>,
+        });
       }
     })
   }
 
   useEffect(() => {
-    const showError = () => {
-      if (error.length > 0) {
+    const showError = async () => {
+      const credsFormState = Object.values(form?.formState.errors)
+      const error = (credsFormState[0])
+      if (error && error.message) {
         toast({
           description: (
-            <div className='flex flex-row items-center justify-center gap-2'>
+            <p className='flex flex-row items-center justify-center gap-2'>
               <ExclamationTriangleIcon className='mt-1'/>
-              <span>Invalid format or field is empty.</span>
-            </div>
+              <span>{error.message}</span>
+            </p>
         ),
           action: <ToastAction altText="Try again" onClick={() => form.reset()}>Try again</ToastAction>,
         });
@@ -73,7 +96,7 @@ const Signin = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2 p-6 border border-gray-300 rounded-lg shadow-md w-96'>
           <div className='my-2 space-y-2'>
-            <h1 className='text-xl font-bold text-indigo-700'>JobScout</h1>
+            <Link to={'/'} className='text-xl font-bold text-indigo-700'>JobScout</Link>
             <p className='text-sm font-semibold text-gray-500'>Account Sign in</p>
             <span className='text-xs font-semibold text-gray-600'>Don't have an account? Sign up.</span>
           </div>

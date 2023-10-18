@@ -75,8 +75,8 @@ const Step2 = () => {
     <div className='flex flex-col items-center justify-center w-full min-h-screen'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-2 p-4 border border-gray-300 rounded-lg shadow-md w-96'>
-          <div className='my-4 space-y-2'>
-            <h1 className='text-xl font-bold text-indigo-700'>JobScout</h1>
+          <div className='mt-2 mb-1 space-y-2'>
+            <Link to={'/'} className='text-xl font-bold text-indigo-700'>JobScout</Link>
             <p className='text-sm font-semibold text-gray-500'>Create a Tenant Account</p>
             <span className='text-xs font-semibold text-slate-700'>Already have an account? <Link to='/signin' className='underline'>Sign in.</Link></span>
           </div>
