@@ -115,19 +115,15 @@ const UserProfile = () => {
   ]
 
   const onSubmitAccountForm = (input) => {
-    if (accountForm.formState.isValid){
-      mutate({input})
-    }
+    mutate({input})
   }
 
   const onSubmitPasswordForm = (input) => {
-    if (passwordForm.formState.isValid){
-      mutate({input}, {
-        onSuccess: () => {
-          navigate('/signin')
-        }
-      })
-    }
+    mutate({input}, {
+      onSuccess: () => {
+        navigate('/signin')
+      }
+    })
   }
 
   useEffect(() => {
@@ -221,7 +217,6 @@ const UserProfile = () => {
                                 {...field} 
                                 className='border border-gray-400 rounded-none'
                                 placeholder={data.defaultValue}
-                                disabled={isLoading? true : false}
                               />
                             </FormControl>
                           </FormItem>

@@ -1,4 +1,5 @@
 import AssignedActionsBtn from '@components/buttons/AssignedActionsBtn';
+import ClientActionsBtn from '@components/buttons/ClientActionsBtn';
 import ActionsBtn from '@components/buttons/UnassignedActionsBtn';
 import { CaretSortIcon, DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { createColumnHelper } from '@tanstack/react-table'
@@ -7,7 +8,7 @@ import React, { useState } from 'react'
 const columnHelper = createColumnHelper();
 
 const clientColumns = [
-    columnHelper.accessor('company_name', {
+    columnHelper.accessor('company', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -18,7 +19,7 @@ const clientColumns = [
         )
       },
     }),
-    columnHelper.accessor('company_poc_name', {
+    columnHelper.accessor('contact', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -29,7 +30,7 @@ const clientColumns = [
         )
       },
     }),
-    columnHelper.accessor('company_poc_title', {
+    columnHelper.accessor('designation', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -40,7 +41,7 @@ const clientColumns = [
         )
       },
     }),
-    columnHelper.accessor('company_email', {
+    columnHelper.accessor('email', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -51,7 +52,7 @@ const clientColumns = [
         )
       },
     }),
-    columnHelper.accessor('company_phone', {
+    columnHelper.accessor('phone', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -62,7 +63,7 @@ const clientColumns = [
         )
       },
     }),
-    columnHelper.accessor('company_address', {
+    columnHelper.accessor('address', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -76,10 +77,10 @@ const clientColumns = [
     columnHelper.accessor('Actions', {
       cell: (info) => {
 
-        const job = info.row.original
+        const client = info.row.original
 
        return(
-        <AssignedActionsBtn job={job}/>
+        <ClientActionsBtn client={client}/>
        )
       },
      

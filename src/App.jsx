@@ -8,6 +8,7 @@ import Step3 from '@pages/auth/Step3'
 import Layout from '@pages/common/Layout'
 import TenantDashboard from '@pages/tenant/TenantDashboard'
 import Assigned from '@pages/tenant/assigned/Assigned'
+import ClientDetails from '@pages/tenant/clients/ClientDetails'
 import Clients from '@pages/tenant/clients/Clients'
 import Employees from '@pages/tenant/employees/Employees'
 import UserProfile from '@pages/tenant/profile/UserProfile'
@@ -31,6 +32,7 @@ const App = () => {
           <Route path={'/t/assigned'} element={<Assigned />}/>
           <Route path={'/t/unassigned'} element={<Unassigned />}/>
           <Route path={'/t/clients'} element={<Clients />}/>
+          <Route path={'/t/clients/:clientId'} element={<ClientDetails />}/>
           <Route path={'/t/employees'} element={<Employees />}/>
           <Route path={'/t/profile'} element={<UserProfile />}/>
 

@@ -1,3 +1,14 @@
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@components/ui/command"
+import { Input } from "@components/ui/input";
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@components/ui/select';
 import { useSearchContext } from '@context/SearchContextProvider';
@@ -35,26 +46,23 @@ const PaginationBtn = ({ data, page, query, location, assignment}) => {
     <div className="flex flex-row items-center justify-center gap-2 py-2">
       <button onClick={handlePreviousPage} className="join-item btn btn-sm btn-primary"><DoubleArrowLeftIcon /></button>
       <Select onValueChange={handleChangePage}>
-
-            <SelectTrigger className="w-[120px] text-xs">
-              <SelectValue placeholder={`Page ${page ? page: ''}`}/>
-            </SelectTrigger>
-            <SelectContent className="w-[120px] text-xs">
-
-            <SelectGroup className="w-[120px]">
-              <ScrollArea className='h-60'>
-                <SelectLabel>Fruits</SelectLabel>
-                {[...Array(data?.meta?.total_pages)].map((_, index) => (
-                  <SelectItem key={index} value={index + 1} className='text-sm'>
-                    Page {index + 1}
-                  </SelectItem>
-                ))}
-              </ScrollArea>
-            </SelectGroup>
-          </SelectContent>
+        <SelectTrigger className="w-[120px] text-xs">
+          <SelectValue placeholder={`Page ${page ? page: ''}`}/>
+        </SelectTrigger>
+        <SelectContent className="w-[120px] text-xs">
+          <SelectGroup className="w-[120px]">
+            <ScrollArea className='h-[60vh]'>
+              <SelectLabel>Go to</SelectLabel>
+              {[...Array(data?.meta?.total_pages)].map((_, index) => (
+                <SelectItem key={index} value={index + 1} className='text-sm'>
+                  Page {index + 1}
+                </SelectItem>
+              ))}
+            </ScrollArea>
+          </SelectGroup>
+        </SelectContent>
       </Select>
       <button onClick={handleNextPage} className="join-item btn btn-sm btn-primary"><DoubleArrowRightIcon /></button>
-      
     </div>
   )
 }

@@ -21,9 +21,9 @@ const Assigned = () => {
   const { data, isLoading } = fetchTenantJobsData(assignment, page, query, location)
 
   return isLoading ? <div>Loading... </div> : (
-    <div className='container mx-auto py-4 overflow-y-auto'>  
+    <div className='container py-4 mx-auto overflow-y-auto'>  
       <DataTable columns={assignedColumns} data={data.data} query={query} location={location}/>
-      <div className='fixed bottom-5 right-5'>
+      <div className='container mx-auto py-4 overflow-y-auto h-[90vh] flex flex-col justify-between'>
         <PaginationBtn data={data} page={page} query={query} location={location} assignment={assignment} />
       </div>
     </div>
