@@ -15,20 +15,20 @@ const UnassignedActionsBtn = ({job}) => {
 
   return (   
     <DropdownMenu >
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="w-4 h-4 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="w-4 h-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel className='text-xs'>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator className='px-2 bg-gray-300'/>
-            <DropdownMenuItem onClick={handleAssign} className='flex flex-row justify-center gap-2 text-xs cursor-pointer'>
-            <Plus size={'1rem'}/> Grab job order
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="w-4 h-2 p-0">
+          <span className="sr-only">Open menu</span>
+          <DotsHorizontalIcon className="w-4 h-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel className='text-xs'>Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator className='px-2 bg-gray-300'/>
+        <DropdownMenuItem onClick={handleAssign} className='flex flex-row justify-center gap-2 text-xs cursor-pointer'>
+        <Plus size={'1rem'}/> Grab job order
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

@@ -57,7 +57,7 @@ const Sidebar = () => {
         JobScout
       </div>
       <div className='h-[90vh] flex flex-col items-center justify-between'>
-        <div className='flex flex-col items-end w-full px-10 py-4 space-y-2'>
+        <div className='flex flex-col items-end w-full gap-4 px-10 py-4'>
           {menuItems.map((data, index) => (
             <Link to={data.path} key={index} className='mr-auto'>{data.name}</Link>
           ))}

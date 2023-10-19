@@ -54,8 +54,8 @@ const ProfileDropDown = ({data}) => {
         <DropdownMenuContent className='absolute left-0 right-0 bottom-5'>
           <DropdownMenuLabel>Settings</DropdownMenuLabel>
           <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to='/t/profile'>Profile</Link>
+            <DropdownMenuItem className='p-0'>
+              <Link to='/t/profile' className='w-full p-2'>Profile</Link>
               <DropdownMenuShortcut><PersonIcon /></DropdownMenuShortcut>
             </DropdownMenuItem>
           <DropdownMenuSeparator />

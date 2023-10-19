@@ -16,13 +16,11 @@ const Clients = () => {
   const { data, isLoading } = fetchClientsData(page, query)
 
   return isLoading ? <div>Loading... </div> : (
-    <div className='container mx-auto py-4 overflow-y-auto'>
+    <div className='container mx-auto py-4 overflow-y-auto h-[90vh] flex flex-col justify-between'>
       <DataTable columns={clientColumns} data={data.data} query={query} location={location}/>
-      <div className='fixed bottom-5 right-5'>
-        <PaginationBtn data={data} page={page} query={query} location={location} assignment={'unassigned'} />
-      </div>
+      <PaginationBtn data={data} page={page} query={query} location={location} assignment={'unassigned'} />
     </div>
   )
 }
 
-export default HeaderWrapper(Clients, 'Assigned')
+export default HeaderWrapper(Clients, 'Clients')

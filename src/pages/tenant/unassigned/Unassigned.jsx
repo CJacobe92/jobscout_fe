@@ -18,7 +18,7 @@ const Unassigned = () => {
   const { data, isLoading } = fetchTenantJobsData('unassigned', page, query, location)
 
   return isLoading ? <div>Loading... </div> : (
-    <div className='container mx-auto py-4 overflow-y-auto h-[90vh]'>
+    <div className='container mx-auto py-4 overflow-y-auto h-[90vh] flex flex-col justify-between'>
       <DataTable columns={unassignedColumns} data={data.data} query={query} location={location}/>
       <PaginationBtn data={data} page={page} query={query} location={location} assignment={'unassigned'} />
     </div>

@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 const columnHelper = createColumnHelper();
 
 const assignedColumns = [
-    columnHelper.accessor('job_name', {
+    columnHelper.accessor('title', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -18,7 +18,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('company_name', {
+    columnHelper.accessor('company', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -29,7 +29,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_location', {
+    columnHelper.accessor('location', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -40,7 +40,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_salary', {
+    columnHelper.accessor('salary', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -51,7 +51,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_currency', {
+    columnHelper.accessor('currency', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -62,7 +62,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_type', {
+    columnHelper.accessor('category', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -73,7 +73,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_headcount', {
+    columnHelper.accessor('headcount', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (
@@ -84,7 +84,7 @@ const assignedColumns = [
         )
       },
     }),
-    columnHelper.accessor('job_status', {
+    columnHelper.accessor('status', {
       cell: info => info.getValue(),
       header: ({column}) => {
         return (

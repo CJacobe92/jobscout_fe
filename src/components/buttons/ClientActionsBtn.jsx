@@ -4,8 +4,11 @@ import fetchAssign from '@hooks/mutations/fetchAssign';
 import { DotsHorizontalIcon, HandIcon } from '@radix-ui/react-icons';
 import { Plus } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
-const AssignedActionsBtn = ({job}) => {
+const ClientActionsBtn = ({client}) => {
+
+  console.log(client)
 
   return (
       <DropdownMenu className='rounded-md'>
@@ -18,12 +21,12 @@ const AssignedActionsBtn = ({job}) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel className='text-xs'>Actions</DropdownMenuLabel>
         <DropdownMenuSeparator className='px-2 bg-gray-300'/>
-        <DropdownMenuItem className='flex flex-row justify-center gap-2 text-xs cursor-pointer'>
-        <Plus size={'1rem'}/> Grab job order
+        <DropdownMenuItem className='p-0 text-xs'>
+          <Link to={`/t/clients/${client?.id}`} className='w-full p-2'>View client</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-export default AssignedActionsBtn;
+export default ClientActionsBtn 
